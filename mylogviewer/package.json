@@ -13,8 +13,8 @@
   "main": "./extension.js",
   "contributes": {
     "commands": [{
-      "command": "mylogviewer.helloWorld",
-      "title": "Hello World"
+      "command": "mylogviewer.highlightText",
+      "title": "Highlight Text"
     }]
   },
   "scripts": {

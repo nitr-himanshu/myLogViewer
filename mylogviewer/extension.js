@@ -1,36 +1,47 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-
-/**
- * @param {vscode.ExtensionContext} context
- */
 function activate(context) {
+  let disposable = vscode.commands.registerCommand('mylogviewer.highlightText', async function () {
+    // Prompt the user to enter text
+    const textToHighlight = await vscode.window.showInputBox({
+      prompt: 'Enter the text to highlight',
+      placeHolder: 'Text to highlight...'
+    });
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "mylogviewer" is now active!');
+    if (!textToHighlight) {
+      vscode.window.showErrorMessage('Please specify the text to highlight.');
+      return;
+    }
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('mylogviewer.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+      return;
+    }
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from myLogViewer!');
-	});
+    const text = editor.document.getText();
+    const regex = new RegExp(textToHighlight, 'gi');
+    const decorationType = vscode.window.createTextEditorDecorationType({
+      backgroundColor: 'rgba(255,0,0,0.3)' // Red background color
+    });
 
-	context.subscriptions.push(disposable);
+    const decorations = [];
+    let match;
+    while ((match = regex.exec(text))) {
+      const startPos = editor.document.positionAt(match.index);
+      const line = editor.document.lineAt(startPos.line);
+      const decoration = { range: line.range };
+      decorations.push(decoration);
+    }
+
+    editor.setDecorations(decorationType, decorations);
+  });
+
+  context.subscriptions.push(disposable);
 }
 
-// This method is called when your extension is deactivated
 function deactivate() {}
 
 module.exports = {
-	activate,
-	deactivate
-}
+  activate,
+  deactivate
+};

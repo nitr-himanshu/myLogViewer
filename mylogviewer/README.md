@@ -1,6 +1,6 @@
 # mylogviewer README
 
-This is the README for your extension "mylogviewer". After writing up a brief description, we recommend including the following sections.
+Helps in viewing log file. Supports multiple text finding, coloring and indentation view.
 
 ## Features
 

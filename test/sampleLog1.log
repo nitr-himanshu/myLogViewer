@@ -1,0 +1,37 @@
+01-17 20:45:03.456  1234  5678 D/DEBUG_TAG: Debugging the application startup process
+01-17 20:45:03.789  1234  5678 I/INFO_TAG: Initialization complete
+01-17 20:45:04.123  1234  5678 W/WARN_TAG: Potential memory leak detected
+01-17 20:45:04.456  1234  5678 E/ERROR_TAG: Null pointer exception encountered
+01-17 20:45:04.789  1234  5678 F/FATAL_TAG: Out of memory error - terminating application
+
+01-17 20:46:03.456  1234  5678 D/DEBUG_TAG: Entering method onCreate
+01-17 20:46:03.789  1234  5678 I/INFO_TAG: User successfully logged in
+01-17 20:46:04.123  1234  5678 W/WARN_TAG: Deprecated API call
+01-17 20:46:04.456  1234  5678 E/ERROR_TAG: IOException while reading file
+01-17 20:46:04.789  1234  5678 F/FATAL_TAG: Failed to bind service - shutting down
+
+01-17 20:47:03.456  1234  5678 D/DEBUG_TAG: Loading user preferences
+01-17 20:47:03.789  1234  5678 I/INFO_TAG: Preferences loaded successfully
+01-17 20:47:04.123  1234  5678 W/WARN_TAG: Low disk space warning
+01-17 20:47:04.456  1234  5678 E/ERROR_TAG: Failed to connect to server
+01-17 20:47:04.789  1234  5678 F/FATAL_TAG: Unhandled exception - application crash
+
+01-17 20:48:03.456  1234  5678 D/DEBUG_TAG: Debugging the application startup process
+01-17 20:48:03.789  1234  5678 I/INFO_TAG: Initialization complete
+01-17 20:48:04.123  1234  5678 W/WARN_TAG: Potential memory leak detected
+01-17 20:48:04.456  1234  5678 E/ERROR_TAG: Null pointer exception encountered
+01-17 20:48:04.789  1234  5678 F/FATAL_TAG: Out of memory error - terminating application
+
+01-17 20:49:03.456  1234  5678 D/DEBUG_TAG: Entering method onCreate
+01-17 20:49:03.789  1234  5678 I/INFO_TAG: User successfully logged in
+01-17 20:49:04.123  1234  5678 W/WARN_TAG: Deprecated API call
+01-17 20:49:04.456  1234  5678 E/ERROR_TAG: IOException while reading file
+01-17 20:49:04.789  1234  5678 F/FATAL_TAG: Failed to bind service - shutting down
+
+...
+
+01-17 21:45:03.456  1234  5678 D/DEBUG_TAG: Debugging the application startup process
+01-17 21:45:03.789  1234  5678 I/INFO_TAG: Initialization complete
+01-17 21:45:04.123  1234  5678 W/WARN_TAG: Potential memory leak detected
+01-17 21:45:04.456  1234  5678 E/ERROR_TAG: Null pointer exception encountered
+01-17 21:45:04.789  1234  5678 F/FATAL_TAG: Out of memory error - terminating application
