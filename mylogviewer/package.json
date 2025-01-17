@@ -12,10 +12,20 @@
   "activationEvents": [],
   "main": "./extension.js",
   "contributes": {
-    "commands": [{
-      "command": "mylogviewer.highlightText",
-      "title": "Highlight Text"
-    }]
+    "commands": [
+      {
+        "command": "mylogviewer.highlightText",
+        "title": "myLogViewer: Highlight Text"
+      },
+      {
+        "command": "mylogviewer.clearHighlights",
+        "title": "myLogViewer: Clear Highlights"
+      },
+      {
+        "command": "mylogviewer.openSidebar",
+        "title": "myLogViewer: Open Sidebar"
+      }
+    ]
   },
   "scripts": {
     "lint": "eslint .",
