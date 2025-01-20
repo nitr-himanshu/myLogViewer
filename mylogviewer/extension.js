@@ -181,6 +181,16 @@ function removeHighlight(textToHighlight, color) {
   decorationTypes = decorationTypes.filter(dt => dt !== decorationType);
 }
 
+function updateContent(texts, colors) {
+  // Clear all current decorations
+  clearHighlights();
+
+  // Highlight the new set of texts and colors
+  texts.forEach((text, index) => {
+    highlightText(text, colors[index]);
+  });
+}
+
 function activate(context) {
   const sidebarProvider = new SidebarProvider(context);
   context.subscriptions.push(vscode.window.registerWebviewViewProvider('mylogviewer-sidebar', sidebarProvider));
