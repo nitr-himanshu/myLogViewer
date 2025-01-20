@@ -28,6 +28,9 @@ class SidebarProvider {
         case 'updateContent':
           updateContent(message.texts, message.colors);
           return;
+        case 'showErrorMessage':
+          vscode.commands.executeCommand('showErrorMessage', message.message);
+          return;
       }
     });
   }
@@ -56,6 +59,16 @@ class SidebarProvider {
               const color = document.getElementById('color').value;
 
               if (text) {
+                // Check for duplicate text
+                const duplicate = Array.from(textColorList.querySelectorAll('li')).some(item => item.dataset.text === text);
+                if (duplicate) {
+                  vscode.postMessage({
+                    command: 'showErrorMessage',
+                    message: 'Duplicate text. Please add unique text to the list.'
+                  });
+                  return;
+                }
+
                 const listItem = document.createElement('li');
                 listItem.textContent = \`Text: \${text}, Color: \${color}\`;
                 listItem.dataset.text = text;
@@ -194,6 +207,10 @@ function updateContent(texts, colors) {
 function activate(context) {
   const sidebarProvider = new SidebarProvider(context);
   context.subscriptions.push(vscode.window.registerWebviewViewProvider('mylogviewer-sidebar', sidebarProvider));
+
+  context.subscriptions.push(vscode.commands.registerCommand('showErrorMessage', (message) => {
+    vscode.window.showErrorMessage(message);
+  }));
 }
 
 function deactivate() { }
