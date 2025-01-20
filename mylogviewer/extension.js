@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+
 class SidebarProvider {
   constructor(context) {
     this._context = context;
@@ -82,7 +83,8 @@ async function highlightText(textToHighlight, color) {
   let match;
   while ((match = regex.exec(text))) {
     const startPos = editor.document.positionAt(match.index);
-    const range = new vscode.Range(startPos, editor.document.positionAt(match.index + textToHighlight.length));
+    const endPos = editor.document.lineAt(startPos.line).range.end;
+    const range = new vscode.Range(startPos, endPos);
     const decoration = { range };
     decorations.push(decoration);
   }
@@ -130,7 +132,8 @@ function activate(context) {
     let match;
     while ((match = regex.exec(text))) {
       const startPos = editor.document.positionAt(match.index);
-      const range = new vscode.Range(startPos, editor.document.positionAt(match.index + textToHighlight.length));
+      const endPos = editor.document.lineAt(startPos.line).range.end;
+      const range = new vscode.Range(startPos, endPos);
       const decoration = { range };
       decorations.push(decoration);
     }
