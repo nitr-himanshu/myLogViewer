@@ -9,9 +9,30 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:mylogviewer-sidebar"
+  ],
   "main": "./extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "mylogviewer-sidebar-view",
+          "title": "myLogViewer Log list",
+          "icon": "media/myLogViewerIcon.svg"
+        }
+      ]
+    },
+    "views": {
+      "mylogviewer-sidebar-view": [
+        {
+          "type" : "webview",
+          "id": "mylogviewer-sidebar",
+          "name": "Log text Highlighter",
+          "contextualTitle": "myLogViewer"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "mylogviewer.highlightText",
