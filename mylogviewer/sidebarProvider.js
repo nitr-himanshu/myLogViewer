@@ -58,7 +58,6 @@ class SidebarProvider {
             const vscode = acquireVsCodeApi();
             const textColorList = document.getElementById('textColorList');
             const toggleButton = document.getElementById('toggleButton');
-            let showingHighlightedOnly = false;
 
             function addToList() {
               const text = document.getElementById('text').value;
@@ -117,18 +116,15 @@ class SidebarProvider {
             }
 
             function clearHighlights() {
-            textColorList
-            while (textColorList.firstChild) {
-             textColorList.removeChild(textColorList.firstChild);
-            }
+              while (textColorList.firstChild) {
+                textColorList.removeChild(textColorList.firstChild);
+              }
               vscode.postMessage({
                 command: 'clear'
               });
             }
 
             function toggleHighlighted() {
-              showingHighlightedOnly = !showingHighlightedOnly;
-              toggleButton.textContent = showingHighlightedOnly ? 'Show All' : 'Show Highlighted Only';
               const texts = [];
               const colors = [];
               textColorList.querySelectorAll('li').forEach(item => {
@@ -149,9 +145,7 @@ class SidebarProvider {
 }
 
 let decorationTypes = [];
-let originalText = [];
 let highlightedLineNumbers = new Set();
-let showingHighlightedOnly = false;
 
 async function highlightText(textToHighlight, color) {
   if (!textToHighlight) {
@@ -224,17 +218,13 @@ function removeHighlight(textToHighlight, color) {
   editor.setDecorations(decorationType, []);
   decorationTypes = decorationTypes.filter(dt => dt !== decorationType);
 
-  // Remove line numbers from highlightedLineNumbers set
   for (const line of decorations) {
     highlightedLineNumbers.delete(line.range.start.line);
   }
 }
 
 function updateContent(texts, colors) {
-  // Clear all current decorations
   clearHighlights();
-
-  // Highlight the new set of texts and colors
   texts.forEach((text, index) => {
     highlightText(text, colors[index]);
   });
@@ -246,34 +236,28 @@ async function toggleHighlighted(texts, colors) {
     return;
   }
 
-  if (showingHighlightedOnly) {
-    // Restore original content
-    await editor.edit(editBuilder => {
-      editBuilder.replace(new vscode.Range(0, 0, editor.document.lineCount, 0), originalText.join('\n'));
-    });
-    showingHighlightedOnly = false;
-  } else {
-    // Show only highlighted lines
-    const text = editor.document.getText();
-    const lines = text.split('\n');
-    originalText = lines.slice(); // Keep a copy of the original text
-    const highlightedLines = [];
+  const text = editor.document.getText();
+  const lines = text.split('\n');
+  const highlightedLines = [];
 
-    highlightedLineNumbers.forEach(lineNumber => {
-      highlightedLines.push(lines[lineNumber]);
-    });
+  highlightedLineNumbers.forEach(lineNumber => {
+    highlightedLines.push({ line: lineNumber, text: lines[lineNumber] });
+  });
 
-    await editor.edit(editBuilder => {
-      editBuilder.replace(new vscode.Range(0, 0, editor.document.lineCount, 0), highlightedLines.join('\n'));
-    });
-    showingHighlightedOnly = true;
-  }
-  clearHighlights();
+  highlightedLines.sort((a, b) => a.line - b.line);
+
+  const document = await vscode.workspace.openTextDocument({
+    content: highlightedLines.map(line => `${line.line + 1}: ${line.text}`).join('\n'),
+    language: editor.document.languageId
+  });
+
+  await vscode.window.showTextDocument(document, { preview: false });
+
   texts.forEach((text, index) => {
     highlightText(text, colors[index]);
   });
 }
 
 module.exports = {
-    SidebarProvider
+  SidebarProvider
 };
