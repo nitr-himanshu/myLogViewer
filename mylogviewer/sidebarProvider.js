@@ -41,19 +41,42 @@ class SidebarProvider {
   _getWebviewContent() {
     return `
       <html>
+        <head>
+          <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+          <style>
+            body {
+              padding: 20px;
+              background-color: black;
+              color: white;
+            }
+            .remove-btn {
+              background: none;
+              border: none;
+              cursor: pointer;
+            }
+            .remove-btn img {
+              width: 16px;
+              height: 16px;
+            }
+          </style>
+        </head>
         <body>
-          <h1>My Log Viewer</h1>
-          <form id="highlightForm">
-            <label for="text">Text to highlight:</label>
-            <input type="text" id="text" name="text"><br><br>
-            <label for="color">Highlight color:</label>
-            <input type="color" id="color" name="color" value="#ff0000"><br><br>
-            <button type="button" onclick="addToList()">Add to List</button>
-            <button type="button" onclick="clearHighlights()">Clear</button>
-            <button type="button" id="toggleButton" onclick="toggleHighlighted()">Show Highlighted Only</button>
+          <h1 class="mb-4">My Log Viewer</h1>
+          <form id="highlightForm" class="mb-4">
+            <div class="form-group">
+              <label for="text">Text to highlight:</label>
+              <input type="text" id="text" name="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="color">Highlight color:</label>
+              <input type="color" id="color" name="color" value="#ff0000" class="form-control">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="addToList()">Add to List</button>
+            <button type="button" class="btn btn-warning" onclick="clearHighlights()">Clear</button>
+            <button type="button" id="toggleButton" class="btn btn-info" onclick="toggleHighlighted()">Show Highlighted Only</button>
           </form>
-          <h2>Text and Color List</h2>
-          <ul id="textColorList"></ul>
+          <h2 class="mb-3">Text and Color List</h2>
+          <ul id="textColorList" class="list-group"></ul>
           <script>
             const vscode = acquireVsCodeApi();
             const textColorList = document.getElementById('textColorList');
@@ -64,7 +87,6 @@ class SidebarProvider {
               const color = document.getElementById('color').value;
 
               if (text) {
-                // Check for duplicate text
                 const duplicate = Array.from(textColorList.querySelectorAll('li')).some(item => item.dataset.text === text);
                 if (duplicate) {
                   vscode.postMessage({
@@ -75,12 +97,16 @@ class SidebarProvider {
                 }
 
                 const listItem = document.createElement('li');
-                listItem.textContent = \`Text: \${text}, Color: \${color}\`;
+                listItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
                 listItem.dataset.text = text;
                 listItem.dataset.color = color;
 
+                const textContent = document.createElement('span');
+                textContent.textContent = \`Text: \${text}, Color: \${color}\`;
+
                 const removeButton = document.createElement('button');
-                removeButton.textContent = 'Remove';
+                removeButton.classList.add('remove-btn');
+                removeButton.innerHTML = '<img src="https://image.flaticon.com/icons/svg/1828/1828778.svg" alt="Remove">';
                 removeButton.onclick = () => {
                   textColorList.removeChild(listItem);
                   vscode.postMessage({
@@ -90,6 +116,8 @@ class SidebarProvider {
                   });
                   updateContent();
                 };
+
+                listItem.appendChild(textContent);
                 listItem.appendChild(removeButton);
                 textColorList.appendChild(listItem);
                 updateContent();
@@ -146,6 +174,7 @@ class SidebarProvider {
 
 let decorationTypes = [];
 let highlightedLineNumbers = new Set();
+let tabCounter = 0;
 
 async function highlightText(textToHighlight, color) {
   if (!textToHighlight) {
@@ -251,7 +280,11 @@ async function toggleHighlighted(texts, colors) {
     language: editor.document.languageId
   });
 
-  await vscode.window.showTextDocument(document, { preview: false });
+  const fileName = editor.document.fileName.split('/').pop();
+  tabCounter++;
+  const tabTitle = `myLogviewer - ${fileName} - Tab ${tabCounter}`;
+
+  await vscode.window.showTextDocument(document, { preview: false, viewColumn: vscode.ViewColumn.Beside, options: { tabTitle, preserveFocus: true } });
 
   texts.forEach((text, index) => {
     highlightText(text, colors[index]);
