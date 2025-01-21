@@ -1,8 +1,9 @@
 {
-  "name": "mylogviewer",
-  "displayName": "myLogViewer",
-  "description": "A custom log viewer which help in log analysis",
+  "name": "loghighlighter",
+  "displayName": "loghighlighter",
+  "description": "Highlight logs",
   "version": "0.0.1",
+  "publisher": "nitr-himanshu",
   "engines": {
     "vscode": "^1.96.0"
   },
@@ -10,42 +11,30 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:mylogviewer-sidebar"
+    "onView:loghighlight-sidebar"
   ],
   "main": "./extension.js",
   "contributes": {
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "mylogviewer-sidebar-view",
-          "title": "myLogViewer Log list",
-          "icon": "media/myLogViewerIcon.svg"
+          "id": "loghighlight-sidebar-view",
+          "title": "loghighlight Log list",
+          "icon": "media/loghighlightIcon.svg"
         }
       ]
     },
     "views": {
-      "mylogviewer-sidebar-view": [
+      "loghighlight-sidebar-view": [
         {
           "type" : "webview",
-          "id": "mylogviewer-sidebar",
+          "id": "loghighlight-sidebar",
           "name": "Log text Highlighter",
-          "contextualTitle": "myLogViewer"
+          "contextualTitle": "loghighlight"
         }
       ]
     },
     "commands": [
-      {
-        "command": "mylogviewer.highlightText",
-        "title": "myLogViewer: Highlight Text"
-      },
-      {
-        "command": "mylogviewer.clearHighlights",
-        "title": "myLogViewer: Clear Highlights"
-      },
-      {
-        "command": "mylogviewer.openSidebar",
-        "title": "myLogViewer: Open Sidebar"
-      }
     ]
   },
   "scripts": {

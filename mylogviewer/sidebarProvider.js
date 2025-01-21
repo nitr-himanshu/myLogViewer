@@ -58,6 +58,10 @@ class SidebarProvider {
               width: 16px;
               height: 16px;
             }
+            .list-group-item { 
+                background-color: #333333; /* Dark list item background */ 
+                color: #ffffff; /* Light text for list items */ 
+            }
           </style>
         </head>
         <body>
@@ -106,7 +110,7 @@ class SidebarProvider {
 
                 const removeButton = document.createElement('button');
                 removeButton.classList.add('remove-btn');
-                removeButton.innerHTML = '<img src="https://image.flaticon.com/icons/svg/1828/1828778.svg" alt="Remove">';
+                removeButton.innerHTML = '<span>Remove</span>';
                 removeButton.onclick = () => {
                   textColorList.removeChild(listItem);
                   vscode.postMessage({
