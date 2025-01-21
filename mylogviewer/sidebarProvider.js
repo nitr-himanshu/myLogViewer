@@ -61,21 +61,21 @@ class SidebarProvider {
           </style>
         </head>
         <body>
-          <h1 class="mb-4">My Log Viewer</h1>
+          <h1 class="mb-4"> LogHighlights </h1>
           <form id="highlightForm" class="mb-4">
             <div class="form-group">
-              <label for="text">Text to highlight:</label>
+              <label for="text">Log to highlight:</label>
               <input type="text" id="text" name="text" class="form-control">
             </div>
             <div class="form-group">
-              <label for="color">Highlight color:</label>
+              <label for="color">Choose highlighter color:</label>
               <input type="color" id="color" name="color" value="#ff0000" class="form-control">
             </div>
             <button type="button" class="btn btn-primary" onclick="addToList()">Add to List</button>
             <button type="button" class="btn btn-warning" onclick="clearHighlights()">Clear</button>
             <button type="button" id="toggleButton" class="btn btn-info" onclick="toggleHighlighted()">Show Highlighted Only</button>
           </form>
-          <h2 class="mb-3">Text and Color List</h2>
+          <h2 class="mb-3">Log and highlight-color List</h2>
           <ul id="textColorList" class="list-group"></ul>
           <script>
             const vscode = acquireVsCodeApi();
